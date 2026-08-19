@@ -1,4 +1,4 @@
-
+-- This is the main configuration file for Neovim. It sets up basic settings, plugins, LSP configurations, and keybindings.
 -----------------------------------------------------------
 -- BASIC SETTINGS
 -----------------------------------------------------------
