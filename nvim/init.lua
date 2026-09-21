@@ -37,6 +37,13 @@ vim.opt.clipboard = "unnamedplus"
 
 vim.cmd.colorscheme("retrobox")
 
+-- Use spaces instead of tab characters
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+
+
 -----------------------------------------------------------
 -- LAZY.NVIM
 -----------------------------------------------------------
@@ -336,6 +343,20 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 })
 
+-----------------------------------------------------------
+-- RETURN TO LAST CURSOR POSITION WHEN REOPENING FILES
+-----------------------------------------------------------
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*",
+  callback = function()
+    local last_pos = vim.fn.line("'\"")
+    local last_line = vim.fn.line("$")
+
+    if last_pos > 0 and last_pos <= last_line then
+      vim.cmd('normal! g`"')
+    end
+  end,
+})
 
 -----------------------------------------------------------
 -- DIAGNOSTICS
@@ -437,10 +458,10 @@ vim.api.nvim_create_autocmd("FileType", {
 
     callback = function()
 
-        -- Your Fortran code uses conventional 3-space indentation
-        vim.opt_local.tabstop = 3
-        vim.opt_local.shiftwidth = 3
-        vim.opt_local.expandtab = false
+        vim.opt_local.tabstop = 2
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.softtabstop = 2
+        vim.opt_local.expandtab = true
 
         -- Don't wrap long AMITEX/UMAT lines
         vim.opt_local.wrap = false
@@ -537,3 +558,6 @@ vim.keymap.set(
     { silent = true }
 )
 
+-- Move selected lines left and right in visual mode
+vim.keymap.set("v", ">", ">gv", { noremap = true, silent = true })
+vim.keymap.set("v", "<", "<gv", { noremap = true, silent = true })
